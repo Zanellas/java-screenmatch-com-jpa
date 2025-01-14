@@ -10,7 +10,7 @@ public enum Categoria {
     private String categoriaOmdb;
     private String categoriaPortugues;
 
-    Categoria(String categoriaOmdb, String categoriaPortugues) {
+    Categoria(String categoriaOmdb, String categoriaPortugues){
         this.categoriaOmdb = categoriaOmdb;
         this.categoriaPortugues = categoriaPortugues;
     }
@@ -21,7 +21,7 @@ public enum Categoria {
                 return categoria;
             }
         }
-        throw new IllegalArgumentException("Nenhuma categoria encontrada para a série para a string fornecida");
+        throw new IllegalArgumentException("Nenhuma categoria encontrada para a string fornecida: " + text);
     }
 
     public static Categoria fromPortugues(String text) {
@@ -30,7 +30,6 @@ public enum Categoria {
                 return categoria;
             }
         }
-        throw new IllegalArgumentException("Nenhuma categoria encontrada para a série para a string fornecida");
+        throw new IllegalArgumentException("Nenhuma categoria encontrada para a string fornecida: " + text);
     }
-
 }
