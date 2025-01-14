@@ -15,15 +15,15 @@ public class Serie {
     private Long id;
     @Column(unique = true)
     private String titulo;
-    private Integer totalTemporada;
+    private Integer totalTemporadas;
     private Double avaliacao;
     @Enumerated(EnumType.STRING)
     private Categoria genero;
     private String atores;
     private String poster;
     private String sinopse;
-    @Transient
-    private List<Episodio> epsodios = new ArrayList<>();
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+    private List<Episodio> episodios = new ArrayList<>();
 
     public Serie() {
 
@@ -31,13 +31,21 @@ public class Serie {
 
     public Serie(DadosSerie dadosSerie) {
         this.titulo = dadosSerie.titulo();
-        this.totalTemporada = dadosSerie.totalTemporadas();
+        this.totalTemporadas = dadosSerie.totalTemporadas();
         this.avaliacao = OptionalDouble.of(Double.valueOf(dadosSerie.avaliacao())).orElse(0);
         this.genero = Categoria.fromString(dadosSerie.genero().split(",")[0].trim());
-        this.atores =  dadosSerie.atores();
+        this.atores = dadosSerie.atores();
         this.poster = dadosSerie.poster();
         this.sinopse = ConsultaMyMemory.obterTraducao(dadosSerie.sinopse());
         //this.sinopse = ConsultarChatGPT.obterTraducao(dadosSeries.sinopse()).trim();
+    }
+
+    public List<Episodio> getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        this.episodios = episodios;
     }
 
     public Long getId() {
@@ -56,12 +64,12 @@ public class Serie {
         this.titulo = titulo;
     }
 
-    public Integer getTotalTemporada() {
-        return totalTemporada;
+    public Integer getTotalTemporadas() {
+        return totalTemporadas;
     }
 
-    public void setTotalTemporada(Integer totalTemporada) {
-        this.totalTemporada = totalTemporada;
+    public void setTotalTemporadas(Integer totalTemporadas) {
+        this.totalTemporadas = totalTemporadas;
     }
 
     public Double getAvaliacao() {
@@ -108,7 +116,7 @@ public class Serie {
     public String toString() {
         return "Serie{" +
                 "titulo='" + titulo + '\'' +
-                ", totalTemporada=" + totalTemporada +
+                ", totalTemporadas=" + totalTemporadas +
                 ", avaliacao=" + avaliacao +
                 ", genero=" + genero +
                 ", atores='" + atores + '\'' +
